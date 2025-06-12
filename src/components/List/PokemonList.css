@@ -1,0 +1,15 @@
+.pokemon-list-scroll {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 16px 95px 16px;
+  box-sizing: border-box;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.pokemon-list-scroll::-webkit-scrollbar {
+  display: none;
+}
