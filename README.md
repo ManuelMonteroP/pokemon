@@ -1,5 +1,6 @@
 # Pokedex
 
+![Captura de pantalla](https://i.imgur.com/L0Xt991.png)
 Aplicación construida con Vue 3 + Vite que permite explorar una lista de Pokémon, marcar favoritos, buscar por nombre y ver los detalles de cada uno.
 
 ---

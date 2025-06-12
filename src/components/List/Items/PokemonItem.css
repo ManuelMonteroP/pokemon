@@ -11,6 +11,11 @@
   user-select: none;
 }
 
+.pokemon-item:hover {
+  background-color: #f3f3f3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
 .pokemon-name {
   font-family: Lato;
   font-weight: 500;
@@ -18,18 +23,4 @@
   line-height: 100%;
   letter-spacing: 0%;
   vertical-align: middle;
-}
-
-.star-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  width: 44px;
-  height: 44px;
-}
-
-.star-btn img {
-  width: 44px;
-  height: 44px;
 }

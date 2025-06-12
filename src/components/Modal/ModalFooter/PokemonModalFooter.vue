@@ -1,16 +1,13 @@
 <template>
   <div class="modal-footer">
     <BaseButton text="Share to my friends" @click="$emit('share')" />
-    <button class="fav-floating" :class="{ active: isFavorite }" @click="$emit('toggleFavorite')">
-      <img :src="isFavorite ? starFilled : starOutline" alt="favorite" />
-    </button>
+    <BaseFavoriteButton :class="{ active: isFavorite }" :is-active="isFavorite" @toggle="$emit('toggleFavorite')" />
   </div>
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/UiKit/Button/BaseButton.vue'
-import starFilled from '@/assets/icons/star-filled.svg'
-import starOutline from '@/assets/icons/star-outline.svg'
+import BaseFavoriteButton from '@/components/UiKit/Button/BaseFavoriteButton/BaseFavoriteButton.vue'
 
 defineProps<{
   isFavorite: boolean
@@ -28,21 +25,5 @@ defineEmits<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.fav-floating {
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 50%;
-  background: #f0f0f0;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.fav-floating.active {
-  background: #ffe066;
 }
 </style>
