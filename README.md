@@ -1,18 +1,30 @@
-# pokedex
+# Pokedex
 
-This template should help get you started developing with Vue 3 in Vite.
+Aplicación construida con Vue 3 + Vite que permite explorar una lista de Pokémon, marcar favoritos, buscar por nombre y ver los detalles de cada uno.
 
-## Recommended IDE Setup
+---
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Tecnologías utilizadas
 
-## Type Support for `.vue` Imports in TS
+- **Vue 3 + Composition API** — Por su simplicidad, reactividad mejorada y separación lógica clara en componentes y composables (`useHomeView`).
+- **TypeScript** — Aporta tipado fuerte y mejora la experiencia de desarrollo al prevenir errores comunes.
+- **Vite** — Elegido como bundler por su velocidad en desarrollo y build.
+- **Pinia** — Store oficial de Vue 3, utilizada para manejar el estado global como la lista de favoritos.
+- **Vitest + Vue Test Utils** — Para testear componentes de manera unitaria con rapidez y bajo acoplamiento.
+- **ESLint + Prettier** — Aseguran consistencia en el código y cumplimiento de convenciones.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+---
 
-## Customize configuration
+## Decisiones técnicas y enfoque
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- La aplicación fue pensada como si fuera a escalar, por eso implemente:
+  - **Paginación**: Se implementó carga incremental (`loadMorePokemons`) para evitar grandes volúmenes de datos en memoria.
+  - **Debounce en búsqueda**: Para prevenir múltiples llamadas al API al escribir rápido.
+  - **Composables**: La lógica de la vista (`useHomeView`) se separó del componente `HomeView.vue` para facilitar futuras pruebas, mantenimiento y reutilización.
+  - **Manejo de estado global con Pinia**: Almaceno los favoritos.
+  - **Componentes reutilizables**: Como `BaseInput`, `BaseButton`, etc., para fomentar la escalabilidad de la UI.
+
+---
 
 ## Project Setup
 
@@ -42,4 +54,10 @@ npm run test:unit
 
 ```sh
 npm run lint
+```
+
+### DEMO with [Vercel](pokemon-khaki-five.vercel.app/)
+
+```sh
+pokemon-khaki-five.vercel.app/
 ```

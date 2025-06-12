@@ -1,14 +1,17 @@
 // src/views/Home/useHomeView.ts
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { PokemonService } from '@/services/pokemonService'
 import type { BasicPokemon, PokemonDetail } from '@/types/Pokemon'
+import { debounce } from '@/utils/debounce'
+import { useFavoritesStore } from '@/stores/favorites'
 
 export function useHomeView() {
+  const favoritesStore = useFavoritesStore()
   const pokemons = ref<BasicPokemon[]>([])
-  const favorites = ref<string[]>([])
+  const favorites = ref<string[]>([...favoritesStore.favorites])
   const loading = ref(true)
-  const search = ref('')
+  const search = ref<string>('')
   const selectedTab = ref<'all' | 'favorites'>('all')
   const selectedPokemon = ref<PokemonDetail | null>(null)
   const showModal = ref(false)
@@ -18,6 +21,8 @@ export function useHomeView() {
   const offset = ref(0)
   const limit = 20
   const isFetchingMore = ref(false)
+
+  const alreadyTriedToFetch = ref<string | null>(null)
 
   const filteredPokemons = computed(() => {
     const query = search.value.toLowerCase()
@@ -39,6 +44,34 @@ export function useHomeView() {
       loading.value = false
     }
   })
+
+  watch(
+    search,
+    debounce((value: unknown) => {
+      if (typeof value === 'string') {
+        fetchPokemonByName(value.trim().toLowerCase())
+      }
+    }, 500),
+  )
+
+  const fetchPokemonByName = async (query: string) => {
+    if (!query || alreadyTriedToFetch.value === query) return
+
+    const exists = pokemons.value.some((p) => p.name.toLowerCase() === query)
+    if (exists) return
+
+    try {
+      const result = await pokemonService.getPokemonByName(query)
+      pokemons.value.push({
+        name: result.name,
+        url: `https://pokeapi.co/api/v2/pokemon/${result.name}/`,
+      })
+    } catch {
+      console.warn('No encontrado:', query)
+    } finally {
+      alreadyTriedToFetch.value = query
+    }
+  }
 
   const handleShare = (pokemon: PokemonDetail) => {
     const data = `Name: ${pokemon.name}, Types: ${pokemon.types
@@ -68,6 +101,7 @@ export function useHomeView() {
     } else {
       favorites.value.push(name)
     }
+    favoritesStore.setFavorites(favorites.value)
   }
 
   const goToWelcome = () => {
