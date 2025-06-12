@@ -56,8 +56,20 @@ npm run test:unit
 npm run lint
 ```
 
-### DEMO with [Vercel](pokemon-khaki-five.vercel.app/)
+### DEMO with [Vercel](https://pokemon-khaki-five.vercel.app/)
 
 ```sh
-pokemon-khaki-five.vercel.app/
+https://pokemon-khaki-five.vercel.app/
 ```
+
+## Estructura del proyecto
+
+src/
+├── assets/ # Imágenes, íconos y otros recursos estáticos
+├── components/ # Componentes reutilizables (BaseButton, BaseInput, etc.)
+├── composables/ # Hooks reutilizables como useHomeView
+├── services/ # Lógica para comunicarse con APIs (pokemonService)
+├── store/ # Estado global manejado por Pinia
+├── types/ # Tipos TypeScript (BasicPokemon, PokemonDetail, etc.)
+├── views/ # Vistas principales (HomeView.vue)
+└── App.vue / main.ts # Entrada principal de la aplicación
