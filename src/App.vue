@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import { provide, ref, onMounted } from 'vue'
+import ToastNotification from '@/components/UiKit/Notification/ToastNotification.vue'
+
+const toastRef = ref<InstanceType<typeof ToastNotification>>()
+
+onMounted(() => {
+  if (toastRef.value) {
+    provide('notify', toastRef.value.notify)
+  }
+})
 </script>
 
 <template>
@@ -9,6 +19,7 @@ import { RouterView } from 'vue-router'
         <component :is="Component" />
       </Transition>
     </RouterView>
+    <ToastNotification ref="toastRef" />
   </main>
 </template>
 

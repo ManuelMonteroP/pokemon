@@ -5,6 +5,8 @@ import { PokemonService } from '@/services/pokemonService'
 import type { BasicPokemon, PokemonDetail } from '@/types/Pokemon'
 import { debounce } from '@/utils/debounce'
 import { useFavoritesStore } from '@/stores/favorites'
+import { copyPokemonToClipboard } from '@/utils/share'
+import { useToast } from '@/utils/toast'
 
 export function useHomeView() {
   const favoritesStore = useFavoritesStore()
@@ -23,6 +25,7 @@ export function useHomeView() {
   const isFetchingMore = ref(false)
 
   const alreadyTriedToFetch = ref<string | null>(null)
+  const notify = useToast()
 
   const filteredPokemons = computed(() => {
     const query = search.value.toLowerCase()
@@ -39,7 +42,7 @@ export function useHomeView() {
       await loadMorePokemons()
       await new Promise((resolve) => setTimeout(resolve, 500))
     } catch (err) {
-      console.error('Error on initial load:', err)
+      notify(`'Error on initial load: ${err}`, 'error')
     } finally {
       loading.value = false
     }
@@ -67,21 +70,15 @@ export function useHomeView() {
         url: `https://pokeapi.co/api/v2/pokemon/${result.name}/`,
       })
     } catch {
-      console.warn('No encontrado:', query)
+      notify(`'Error: ${query}`, 'error')
     } finally {
       alreadyTriedToFetch.value = query
     }
   }
 
   const handleShare = (pokemon: PokemonDetail) => {
-    const data = `Name: ${pokemon.name}, Types: ${pokemon.types
-      .map((t) => t.type.name)
-      .join(', ')}, Abilities: ${pokemon.abilities
-      .map((a) => a.ability?.name)
-      .filter(Boolean)
-      .join(', ')}`
-    navigator.clipboard.writeText(data)
-    alert('Pokémon copied to clipboard!')
+    copyPokemonToClipboard(pokemon)
+    notify('the data is copied to the clipboard', 'info')
   }
 
   const openPokemon = async (name: string) => {
@@ -90,7 +87,7 @@ export function useHomeView() {
       selectedPokemon.value = data
       showModal.value = true
     } catch (err) {
-      console.error('Error loading Pokémon:', err)
+      notify(`'Error loading Pokémon: ${err}`, 'error')
     }
   }
 
@@ -112,11 +109,14 @@ export function useHomeView() {
     if (isFetchingMore.value) return
     isFetchingMore.value = true
     try {
+      if (offset.value > 0) {
+        notify('loading more pokemon...', 'info')
+      }
       const list = await pokemonService.getPokemons(limit, offset.value)
       pokemons.value.push(...list)
       offset.value += limit
     } catch (err) {
-      console.error('Error fetching more Pokémon:', err)
+      notify(`'Error fetching more Pokémon: ${err}`, 'error')
     } finally {
       isFetchingMore.value = false
     }
