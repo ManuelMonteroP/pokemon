@@ -1,4 +1,3 @@
-// src/composables/usePokemonPagination.ts
 import { ref } from 'vue'
 import type { BasicPokemon } from '@/types/Pokemon'
 import { PokemonService } from '@/services/pokemonService'

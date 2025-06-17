@@ -11,7 +11,6 @@ export function usePokemonModal(
   const pokemonService = new PokemonService()
 
   const openPokemon = async (name: string) => {
-    // if (selectedPokemon.value?.name === name) return
     try {
       const data = await pokemonService.getPokemonByName(name)
       selectedPokemon.value = data

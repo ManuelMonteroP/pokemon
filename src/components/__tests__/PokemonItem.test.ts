@@ -1,4 +1,3 @@
-// src/components/__tests__/PokemonItem.test.ts
 import { mount } from '@vue/test-utils'
 import PokemonItem from '@/components/List/Items/PokemonItem.vue'
 import { describe, expect, it } from 'vitest'
